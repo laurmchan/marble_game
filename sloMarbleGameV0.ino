@@ -1,16 +1,9 @@
-//Test Edit
+// LCD
+#include <LiquidCrystal.h>
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-//#include <LiquidCrystal.h>
-//
-//const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
-//LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-//
-//void setup() {
-//  lcd.begin(16, 2);
-//  lcd.setCursor(7,1); //first num LR position, second num row position (0 first row)
-//  lcd.print("O");
-//}
-//
+
 //void loop() {
 //  for(int i = 0; i<15; i++)
 //  {
@@ -33,6 +26,10 @@ String currentDir ="";
 unsigned long lastButtonPress = 0;
 
 void setup() {
+  // Set LCD and add "ball"
+  lcd.begin(16, 2);
+  lcd.setCursor(7,1); //first num LR position, second num row position (0 first row)
+  lcd.print("O");
   
   // Set encoder pins as inputs
   pinMode(CLK,INPUT);
