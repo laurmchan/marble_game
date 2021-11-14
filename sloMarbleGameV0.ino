@@ -1,25 +1,8 @@
-//Test Edit
+#include <LiquidCrystal.h>
 
-//#include <LiquidCrystal.h>
-//
-//const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
-//LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-//
-//void setup() {
-//  lcd.begin(16, 2);
-//  lcd.setCursor(7,1); //first num LR position, second num row position (0 first row)
-//  lcd.print("O");
-//}
-//
-//void loop() {
-//  for(int i = 0; i<15; i++)
-//  {
-//    lcd.clear();
-//    lcd.setCursor(i,1); //first num LR position, second num row position (0 first row)
-//    lcd.print("O");
-//    delay(100);
-//  }
-//}
+// LCD Inputs
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 // Rotary Encoder Inputs
 #define CLK 10
@@ -32,9 +15,16 @@ int lastStateCLK;
 String currentDir ="";
 unsigned long lastButtonPress = 0;
 
+int posCount = 7;
+
 void setup() {
-  
-  // Set encoder pins as inputs
+
+  //LCD init
+  lcd.begin(16, 2);
+  lcd.setCursor(7,1); //first num LR position, second num row position (0 first row)
+  lcd.print("O");
+
+  //Encoder init
   pinMode(CLK,INPUT);
   pinMode(DT,INPUT);
   pinMode(SW, INPUT_PULLUP);
@@ -47,8 +37,15 @@ void setup() {
 }
 
 void loop() {
-  
-  // Read the current state of CLK
+//  for(int i = 0; i<15; i++)
+//  {
+//    lcd.clear();
+//    lcd.setCursor(i,1); //first num LR position, second num row position (0 first row)
+//    lcd.print("O");
+//    delay(100);
+//  }
+
+    // Read the current state of CLK
   currentStateCLK = digitalRead(CLK);
 
   // If last and current state of CLK are different, then pulse occurred
@@ -59,10 +56,12 @@ void loop() {
     // the encoder is rotating CCW so decrement
     if (digitalRead(DT) != currentStateCLK) {
       counter --;
+      posCount --;
       currentDir ="CCW";
     } else {
       // Encoder is rotating CW so increment
       counter ++;
+      posCount++;
       currentDir ="CW";
     }
 
@@ -92,4 +91,8 @@ void loop() {
 
   // Put in a slight delay to help debounce the reading
   delay(1);
+
+  lcd.clear();
+  lcd.setCursor(posCount,1); //first num LR position, second num row position (0 first row)
+  lcd.print("O");
 }
