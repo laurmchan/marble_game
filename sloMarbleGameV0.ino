@@ -90,7 +90,7 @@ void loop() {
   delay(1);
 
   currentMillis = millis();  //get the current "time" (actually the number of milliseconds since the program started)
-  if (currentMillis - startMillis >= 500)  //test whether the period has elapsed
+  if (currentMillis - startMillis >= 500/abs(tilt))  //test whether the period has elapsed
   {
       if(tilt>0){ //ball rolls right
         posCount+=1;
@@ -103,13 +103,15 @@ void loop() {
       startMillis = currentMillis;  //IMPORTANT to save the start time of the current LED state.
   }
 
-
-
   if(prevPosCount != posCount){
     lcd.clear();
     lcd.setCursor(posCount,1); //first num LR position, second num row position (0 first row)
     lcd.print("O");
+    lcd.setCursor(0,0);
+    lcd.print("Pos: ");
+    lcd.print(posCount-7);
+
   }
   Serial.println(posCount);
-  //delay(100);
+
 }
