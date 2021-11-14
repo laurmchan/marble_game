@@ -16,6 +16,7 @@ String currentDir ="";
 unsigned long lastButtonPress = 0;
 
 int posCount = 7;
+int vel = 0;
 
 void setup() {
 
@@ -37,14 +38,7 @@ void setup() {
 }
 
 void loop() {
-//  for(int i = 0; i<15; i++)
-//  {
-//    lcd.clear();
-//    lcd.setCursor(i,1); //first num LR position, second num row position (0 first row)
-//    lcd.print("O");
-//    delay(100);
-//  }
-
+for(int i = 0; i<15; i++){
     // Read the current state of CLK
   currentStateCLK = digitalRead(CLK);
 
@@ -56,12 +50,10 @@ void loop() {
     // the encoder is rotating CCW so decrement
     if (digitalRead(DT) != currentStateCLK) {
       counter --;
-      posCount --;
       currentDir ="CCW";
     } else {
       // Encoder is rotating CW so increment
       counter ++;
-      posCount++;
       currentDir ="CW";
     }
 
@@ -91,8 +83,19 @@ void loop() {
 
   // Put in a slight delay to help debounce the reading
   delay(1);
-
+  
+  // Calculate velocity and position
+  vel = vel + counter;
+  if (vel>0){
+    posCount = posCount++;
+  }
+  else if (vel<0){
+    posCount = posCount--;
+  }
+  
   lcd.clear();
   lcd.setCursor(posCount,1); //first num LR position, second num row position (0 first row)
   lcd.print("O");
+  delay(vel*100);
+}
 }
