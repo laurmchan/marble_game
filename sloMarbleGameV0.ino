@@ -38,9 +38,10 @@ void setup() {
 }
 
 void loop() {
-for(int i = 0; i<15; i++){
-    // Read the current state of CLK
+  // Read the current state of CLK
   currentStateCLK = digitalRead(CLK);
+  
+  prevVel = vel;
 
   // If last and current state of CLK are different, then pulse occurred
   // React to only 1 state change to avoid double count
@@ -98,4 +99,4 @@ for(int i = 0; i<15; i++){
   lcd.print("O");
   delay(vel*100);
 }
-}
+
