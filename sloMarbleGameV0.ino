@@ -9,13 +9,19 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 #define DT 9
 #define SW 8
 
-int counter = 0;
+int tilt = 0;
 int currentStateCLK;
 int lastStateCLK;
 String currentDir ="";
 unsigned long lastButtonPress = 0;
+int target = 16;
 
 int posCount = 7;
+
+unsigned long startMillis;  //some global variables available anywhere in the program
+unsigned long currentMillis;
+unsigned long startMillis2;  //some global variables available anywhere in the program
+unsigned long currentMillis2;
 
 void setup() {
 
@@ -34,17 +40,15 @@ void setup() {
 
   // Read the initial state of CLK
   lastStateCLK = digitalRead(CLK);
+
+  startMillis = millis();
+  startMillis2 = millis();
 }
 
 void loop() {
-//  for(int i = 0; i<15; i++)
-//  {
-//    lcd.clear();
-//    lcd.setCursor(i,1); //first num LR position, second num row position (0 first row)
-//    lcd.print("O");
-//    delay(100);
-//  }
-
+  int prevPosCount = posCount;
+  int prevTarget = target;
+  
     // Read the current state of CLK
   currentStateCLK = digitalRead(CLK);
 
@@ -55,20 +59,18 @@ void loop() {
     // If the DT state is different than the CLK state then
     // the encoder is rotating CCW so decrement
     if (digitalRead(DT) != currentStateCLK) {
-      counter --;
-      posCount --;
+      tilt --;
       currentDir ="CCW";
     } else {
       // Encoder is rotating CW so increment
-      counter ++;
-      posCount++;
+      tilt ++;
       currentDir ="CW";
     }
 
     Serial.print("Direction: ");
     Serial.print(currentDir);
     Serial.print(" | Counter: ");
-    Serial.println(counter);
+    Serial.println(tilt);
   }
 
   // Remember last CLK state
@@ -83,6 +85,18 @@ void loop() {
     //button has been pressed, released and pressed again
     if (millis() - lastButtonPress > 50) {
       Serial.println("Button pressed!");
+      if(posCount == target) //correct
+      {
+        lcd.setCursor(0,0);
+        lcd.print("    You Win!!!");
+        delay(1500);
+      }
+      else
+      {
+        lcd.setCursor(0,0);
+        lcd.print("    Nope");
+        delay(500);
+      }
     }
 
     // Remember last button press event
@@ -92,7 +106,57 @@ void loop() {
   // Put in a slight delay to help debounce the reading
   delay(1);
 
-  lcd.clear();
-  lcd.setCursor(posCount,1); //first num LR position, second num row position (0 first row)
-  lcd.print("O");
+  currentMillis = millis();  //get the current "time" (actually the number of milliseconds since the program started)
+  if (currentMillis - startMillis >= 500/abs(tilt))  //test whether the period has elapsed
+  {
+      if(tilt>0){ //ball rolls right
+        posCount+=1;
+      }
+
+      if(tilt<0){ //ball rolls left
+        posCount-=1;
+      }  //if so, change the state of the LED.  Uses a neat trick to change the state
+      
+      startMillis = currentMillis;  //IMPORTANT to save the start time of the current LED state.
+  }
+
+  currentMillis2 = millis();  //get the current "time" (actually the number of milliseconds since the program started)
+  if (currentMillis2 - startMillis2 >= 5000)  //test whether the period has elapsed
+  {
+      target = random(0,15);
+      startMillis2 = currentMillis2;  //IMPORTANT to save the start time of the current LED state.
+  }
+
+  if(random(0,100)>98)
+  {
+    tilt+=random(-1,1);
+  }
+
+  if((prevPosCount != posCount) || (prevTarget != target)){
+    lcd.clear();
+
+    lcd.setCursor(target,1);
+    lcd.print("X");
+
+    if(target == posCount)  //on target
+    {
+      lcd.setCursor(posCount,1);
+      lcd.print("I");
+    }
+    else
+    {
+      lcd.setCursor(posCount,1); //first num LR position, second num row position (0 first row)
+      lcd.print("O");
+    }
+    
+    lcd.setCursor(0,0);
+    lcd.print("Pos:");
+    lcd.print(posCount-7);
+    lcd.print(" ");
+    if(posCount<0 || posCount>15){
+      lcd.print("You Suck");
+    }
+  }
+  Serial.println(tilt);
+
 }
