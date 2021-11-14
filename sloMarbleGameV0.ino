@@ -16,7 +16,10 @@ String currentDir ="";
 unsigned long lastButtonPress = 0;
 
 int posCount = 7;
-int vel = 0;
+int vel;
+int t;
+int startMillis;
+int lastMillis;
 
 void setup() {
 
@@ -42,6 +45,7 @@ void loop() {
   currentStateCLK = digitalRead(CLK);
   
   prevVel = vel;
+  startMillis = millis();
 
   // If last and current state of CLK are different, then pulse occurred
   // React to only 1 state change to avoid double count
@@ -85,14 +89,16 @@ void loop() {
   // Put in a slight delay to help debounce the reading
   delay(1);
   
-  // Calculate velocity and position
-  vel = vel + counter;
+  // Calculate time, velocity, and position
+  t = startMillis - lastMillis;
+  vel = vel + counter*t/1000;
   if (vel>0){
     posCount = posCount++;
   }
   else if (vel<0){
     posCount = posCount--;
   }
+  lastMillis = millis();
   
   lcd.clear();
   lcd.setCursor(posCount,1); //first num LR position, second num row position (0 first row)
