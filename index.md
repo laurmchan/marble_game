@@ -10,3 +10,8 @@ Player controls "tilt" of the platform and the speed and direction of the ball. 
 - Level 1: Player must hit a target with the ball. Player wins by pressing a button once the ball has hit the target.
 - Level 2: Player must hit a target with the ball while the computer changes the platform tilt. Player wins by pressing a button once the ball has hit the target.
 
+### Messages
+Player can receive a number of messages while playing the game! Here's what they mean:
+1. "You Suck" - your ball has rolled off the platform
+2. "Nope" - you pressed the button, but the ball wasn't on the target
+3. "You Win!!!" - congrats!
