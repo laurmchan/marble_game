@@ -1,8 +1,6 @@
-## Welcome to GitHub Pages
+## Welcome to THE MARBLE GAME
 
-You can use the [editor on GitHub](https://github.com/laurmchan/marble_game/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+The Marble Game was created for RE:SLO Hacks in Fall 2021. It is played on Arduino. 
 
 ### Markdown
 
