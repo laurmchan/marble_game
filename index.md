@@ -7,7 +7,3 @@ The Marble Game was created for RE:SLO Hacks in Fall 2021. It is played on Ardui
 - Level 1: Player must hit a target with the ball. Player wins by pressing a button once the ball has hit the target.
 - Level 2: Player must hit a target with the ball while the computer changes the platform tilt. Player wins by pressing a button once the ball has hit the target.
 
-### Leaderboard
-1. Drew Evans
-2. Lauren Chan
-3. Drew
