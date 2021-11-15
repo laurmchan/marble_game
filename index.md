@@ -2,6 +2,9 @@
 
 The Marble Game was created for RE:SLO Hacks in Fall 2021. It is played on Arduino. The game involves "rolling" a marble on a platform without dropping it!
 
+### Gameplay
+Player controls "tilt" of the platform and the speed and direction of the ball. Turning the knob further in either direction will increase the velocity in that direction.
+
 ### Levels
 - Practice Level: Player must keep the ball on the platform. Player cannot win.
 - Level 1: Player must hit a target with the ball. Player wins by pressing a button once the ball has hit the target.
